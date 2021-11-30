@@ -90,7 +90,7 @@ namespace MapReduce
                 new Document(new String[] {"hello", "world"}),
                 new Document(new String[] {"good", "bye", "world"}),
                 new Document(new String[] {"hello", "again"}),
-                
+                null
             };
             var expectedWordCount = new WordCount(new Dictionary<string, int>
             {
@@ -108,6 +108,8 @@ namespace MapReduce
             {
                 a(communicator);
                 b(communicator);
+                c(communicator);
+                d(communicator);
             });
         }
     }
