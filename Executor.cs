@@ -6,7 +6,7 @@ namespace MapReduce
     
     internal class Executor
     {
-        public static WordCount execute(Document document, Intracommunicator communicator)
+        public static WordCount Execute(Document? document, Intracommunicator communicator)
         {
         }
     }

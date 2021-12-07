@@ -9,20 +9,12 @@ using MPI;
 
 namespace MapReduce
 {
-    internal class Document
-    {
-        public Document(String[] words)
-        {
-            this.words = words;
-        }
-        public String[] words;
-    }
-
+    
     internal class Program
     {
-        static void check(Intracommunicator communicator, Document[] documents, WordCount expected)
+        private static void Check(Intracommunicator communicator, Document?[] documents, WordCount expected)
         {
-            var actualWordCount = Executor.execute(documents[communicator.Rank], communicator);
+            var actualWordCount = Executor.Execute(documents[communicator.Rank], communicator);
             if (communicator.Rank == 0 && !actualWordCount.Equals(expected))
             {
                 throw new Exception();
@@ -33,14 +25,14 @@ namespace MapReduce
                 throw new Exception();
             }
         }
-        static void a(Intracommunicator communicator)
+        private static void Test1(Intracommunicator communicator)
         {
             var documents = new Document[]
             {
-                new Document(new String[] {"a", "b"}),
-                new Document(new String[] {"b", "c"}),
-                new Document(new String[] {"c", "d", "d"}),
-                new Document(new String[] {"d", "e"}),
+                new (new [] {"a", "b"}),
+                new (new [] {"b", "c"}),
+                new (new [] {"c", "d", "d"}),
+                new (new [] {"d", "e"}),
             };
             var expectedWordCount = new WordCount(new Dictionary<string, int>
             {
@@ -50,15 +42,15 @@ namespace MapReduce
                 {"d", 3},
                 {"e", 1}
             });
-            check(communicator, documents, expectedWordCount);
+            Check(communicator, documents, expectedWordCount);
         }
-        static void b(Intracommunicator communicator)
+        private static void Test2(Intracommunicator communicator)
         {
-            var documents = new Document[]
+            var documents = new Document?[]
             {
                 null, 
-                new Document(new String[] {"a", "b", "b", "b", "c", "b"}),
-                new Document(new String[] {"b", "c", "b", "b"}),
+                new (new [] {"a", "b", "b", "b", "c", "b"}),
+                new (new [] {"b", "c", "b", "b"}),
                 null
             };
             var expectedWordCount = new WordCount(new Dictionary<string, int>
@@ -67,29 +59,27 @@ namespace MapReduce
                 {"b", 7},
                 {"c", 2}
             });
-            check(communicator, documents, expectedWordCount);
+            Check(communicator, documents, expectedWordCount);
         }
-        static void c(Intracommunicator communicator)
+        private static void Test3(Intracommunicator communicator)
         {
-            var documents = new Document[]
+            var documents = new Document?[]
             { 
                 null, 
                 null, 
                 null,
                 null
             };
-            var expectedWordCount = new WordCount(new Dictionary<string, int>
-            {
-            });
-            check(communicator, documents, expectedWordCount);
+            var expectedWordCount = new WordCount(new Dictionary<string, int>());
+            Check(communicator, documents, expectedWordCount);
         }
-        static void d(Intracommunicator communicator)
+        private static void Test4(Intracommunicator communicator)
         {
-            var documents = new Document[]
+            var documents = new Document?[]
             {
-                new Document(new String[] {"hello", "world"}),
-                new Document(new String[] {"good", "bye", "world"}),
-                new Document(new String[] {"hello", "again"}),
+                new (new [] {"hello", "world"}),
+                new (new [] {"good", "bye", "world"}),
+                new (new [] {"hello", "again"}),
                 null
             };
             var expectedWordCount = new WordCount(new Dictionary<string, int>
@@ -100,16 +90,16 @@ namespace MapReduce
                 {"bye", 1},
                 {"again", 1}
             });
-            check(communicator, documents, expectedWordCount);
+            Check(communicator, documents, expectedWordCount);
         }
         public static void Main(string[] args)
         {
             MPI.Environment.Run(ref args, communicator =>
             {
-                a(communicator);
-                b(communicator);
-                c(communicator);
-                d(communicator);
+                Test1(communicator);
+                Test2(communicator);
+                Test3(communicator);
+                Test4(communicator);
             });
         }
     }

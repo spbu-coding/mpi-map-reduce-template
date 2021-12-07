@@ -7,12 +7,12 @@ namespace MapReduce
     
     public class WordCount
     {
-        public WordCount(Dictionary<String, int> wordCount)
+        public WordCount(Dictionary<string, int> wordCount)
         {
             this.wordCount = wordCount;
         }
 
-        public Dictionary<String, int> wordCount;
+        public Dictionary<string, int> wordCount;
         
     }
 }
